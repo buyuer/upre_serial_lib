@@ -60,6 +60,8 @@ namespace upre
 {
     typedef std::vector<unsigned char>  v_uchar;
     typedef unsigned char uchar;
+    typedef void (*handler)(int);
+
 
     typedef enum
     {
@@ -175,6 +177,16 @@ namespace upre
         ssize_t operator << (uchar &data);
        	
         ssize_t operator << (const char str[]);
+        
+        
+        
+        
+        /*--------------------------------------------------------
+        @函数：Set_Handler
+        @功能：
+        @返回值：
+        --------------------------------------------------------*/
+        void Set_Handler(handler h);
         
         
         

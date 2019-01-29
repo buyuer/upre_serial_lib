@@ -7,6 +7,7 @@
 #include "unistd.h"     //UNIX标准头文件
 #include "fcntl.h"      //UNIX标准头文件
 #include "termios.h"    //UNIX标准头文件
+#include "signal.h"
 
 #include "errno.h"
 
@@ -259,6 +260,18 @@ ssize_t Linux_Usart::operator<<(const char str[])
         lengh++;
     }
     return write(fd,(str-lengh),lengh);
+}
+
+void Linux_Usart::Set_Handler(handler h)
+{
+    struct sigaction act;
+    act.sa_handler = h;
+    act.sa_flags = 0;
+    sigemptyset(&act.sa_mask);
+    sigaction(SIGPOLL,&act,0);
+
+    fcntl(fd,F_SETSIG,SIGPOLL);
+    fcntl(fd,F_SETFL,O_ASYNC | O_NONBLOCK);
 }
 
 int Linux_Usart::Get_fd()
